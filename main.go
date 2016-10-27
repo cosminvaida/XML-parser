@@ -6,19 +6,6 @@ import (
 	"path/filepath"
 )
 
-type Node struct {
-	Name       string
-	Value      string
-	Attr       []Attr
-	ChildsNode []Node
-}
-
-type Attr struct {
-	NameSpace string
-	Key       string
-	Value     string
-}
-
 func main() {
 	strapsFilePath, err := filepath.Abs("file.xml")
 	if err != nil {
@@ -35,12 +22,19 @@ func main() {
 
 	defer file.Close()
 
-	f, err23 := NewDocument(file)
-	fmt.Println(f)
-	fmt.Println(err23)
+	xml, err := XMLDocumentFromFile(file)
+	res, err := xml.search("/Envelope/Header/RelatesTo")
+	fmt.Println(xml)
+	fmt.Println(res)
+	fmt.Println(err)
 
-	//GetElements("HotelReference")
+	//XmlNodeList xnList = xml.SelectNodes("/Names/Name");
+	// f, err23 := NewDocument(file)
+	// fmt.Println(f)
+	// fmt.Println(err23)
 
-	Map(Envelope{})
+	// //GetElements("HotelReference")
+
+	// Map(Envelope{})
 
 }
