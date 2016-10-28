@@ -106,9 +106,7 @@ func decodeEndElement(domTree *string) (*XMLElement, error) {
 		nodeParent.Childs = &XmlElements{}
 	}
 	nodeChild.PathHash = hash(nodeChild.Path)
-
 	nodeParent.Childs.append(nodeChild)
-
 	dom.Push(nodeParent)
 	mapNode(*domTree, &nodeChild)
 	*domTree = strings.TrimSuffix(*domTree, "/"+nodeChild.Name)
