@@ -1,33 +1,35 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"errors"
+	"io"
+)
 
-func XMLDocument() (*XMLElement, error) {
-	return &XMLElement{}, nil
+var dom = Stack()
+var XMLMap = createXMLMap()
+
+type Root *XMLElement
+
+func XMLDocument(in interface{}) (*XMLElement, error) {
+	var ioReader io.Reader
+	switch in.(type) {
+	case string:
+		stringInput := in.(string)
+		buffer := bytes.NewBufferString(stringInput)
+		ioReader = buffer
+	case io.Reader:
+		ioReader = in.(io.Reader)
+	default:
+		return nil, errors.New("Cannot process the input type")
+	}
+	root, err := InitializeXML(ioReader)
+	if err != nil {
+		return nil, err
+	}
+	return root, nil
 }
 
-func SelectNodes(nodePath string) (XmlNodeSplice, error) {
-
-	x := XmlNodeSplice{}
-	fmt.Println(x)
-
-	return nil, nil
-}
-
-func (node *XMLElement) search(nodePath string) (*XMLElement, error) {
-
-	if node.Path == nodePath {
-		return node, nil
-	}
-	for _, childNode := range node.Childs {
-		nodesChild, err := childNode.search(nodePath)
-		if err != nil {
-			return nil, err
-		}
-		if nodesChild != nil {
-			return nodesChild, nil
-		}
-
-	}
-	return nil, nil
+func createXMLMap() map[uint64]XmlElements {
+	return make(map[uint64]XmlElements)
 }

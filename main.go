@@ -22,19 +22,15 @@ func main() {
 
 	defer file.Close()
 
-	xml, err := XMLDocumentFromFile(file)
-	res, err := xml.search("/Envelope/Header/RelatesTo")
+	xml, err := XMLDocument(file)
+	res1, err := xml.SelectNodes("/Envelope/Body/MeetingAvailabilityResponse/AvailableProperties/FunctionSpace/SetupStyles")
+	res, err := xml.GetElementsByPath("/Envelope/Body/MeetingAvailabilityResponse/AvailableProperties/FunctionSpace/SetupStyles")
+	res2, err := xml.GetElementsByAttribute("avaliablityString")
 	fmt.Println(xml)
 	fmt.Println(res)
+	fmt.Println(res1)
+	fmt.Println(res2)
+
 	fmt.Println(err)
-
-	//XmlNodeList xnList = xml.SelectNodes("/Names/Name");
-	// f, err23 := NewDocument(file)
-	// fmt.Println(f)
-	// fmt.Println(err23)
-
-	// //GetElements("HotelReference")
-
-	// Map(Envelope{})
 
 }
